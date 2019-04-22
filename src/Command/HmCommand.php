@@ -1,6 +1,6 @@
 <?php
 
-namespace src\Command;
+namespace App\Command;
 
 /**
  * Created by PhpStorm.
@@ -21,6 +21,12 @@ class HmCommand
     private $userAgent;
     private $userSession;
 
+
+    public function __construct()
+    {
+        Request::verifyPeer(false);
+    }
+
     public static function getProductUrl($productId)
     {
         return str_replace('{product}', urlencode($productId), static::PRODUCT_URL);
@@ -32,6 +38,7 @@ class HmCommand
         $response = Request::get($this->getProductUrl($productId),
             $this->generateHeaders($this->userSession));
 
+        var_dump($response);die();
     }
 
     /**

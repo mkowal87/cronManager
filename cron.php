@@ -5,7 +5,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use Silly\Edition\PhpDi\Application;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use src\Command\HmCommand;
+use App\Command\HmCommand;
 
 $app = new Application('cron - Main cron for getting product availabilities.');
 
@@ -16,7 +16,7 @@ $app->command(
 
         $command = new HmCommand();
 
-        $command->getProductListSizes($provider);
+        $command->getProductListSizes($product);
     /*
 
         // get provider Id
