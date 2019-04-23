@@ -1,10 +1,17 @@
 {
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:mkowal87/csv-writer.git"
+    }
+  ],
   "require": {
     "mnapoli/silly-php-di": "~1.1",
     "monolog/monolog": "@stable",
     "symfony/process": "~3.2",
     "garoevans/php-enum": "^1.2",
-    "mashape/unirest-php": "3.0.*"
+    "mashape/unirest-php": "3.0.*",
+    "csv-writer": "dev-master"
   },
   "autoload": {
     "psr-4": {

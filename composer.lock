@@ -4,8 +4,35 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "30e1ed465b6f617fa03dea870c05a221",
+    "content-hash": "45d621ba6b1d24de9ffb31d0bd9fa5db",
     "packages": [
+        {
+            "name": "csv-writer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mkowal87/csv-writer.git",
+                "reference": "2965088ae261968d8db795aafda43d8c7cd2c272"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mkowal87/csv-writer/zipball/2965088ae261968d8db795aafda43d8c7cd2c272",
+                "reference": "2965088ae261968d8db795aafda43d8c7cd2c272",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CsvWriter\\": "src/"
+                }
+            },
+            "description": "CsvWriter based on buffered TextWriter.",
+            "support": {
+                "source": "https://github.com/mkowal87/csv-writer/tree/master",
+                "issues": "https://github.com/mkowal87/csv-writer/issues"
+            },
+            "time": "2019-04-23T12:48:25+00:00"
+        },
         {
             "name": "garoevans/php-enum",
             "version": "1.2.0",
@@ -967,7 +994,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "monolog/monolog": 0
+        "monolog/monolog": 0,
+        "csv-writer": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
