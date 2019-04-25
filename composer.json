@@ -15,7 +15,8 @@
     "symfony/framework-bundle": "4.2.*",
     "symfony/yaml": "4.2.*",
     "csv-writer": "dev-master",
-    "symfony/orm-pack": "^1.0"
+    "symfony/orm-pack": "^1.0",
+    "mashape/unirest-php": "3.0.*"
   },
   "config": {
     "preferred-install": {
