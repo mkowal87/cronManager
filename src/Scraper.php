@@ -6,13 +6,13 @@
  * Time: 14:12
  */
 
-namespace App\Command;
+namespace App;
 
 
 use Unirest\Exception;
 use Unirest\Request;
 
-class Command
+class Scraper
 {
     const HTTP_NOT_FOUND = 404;
     const HTTP_OK = 200;
@@ -76,4 +76,8 @@ class Command
         return $this;
     }
 
+    private static function getErrorBody($body){
+
+        return substr(serialize($body), 0, 100);
+    }
 }
