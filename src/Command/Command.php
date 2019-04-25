@@ -20,6 +20,10 @@ class Command
     const HTTP_BAD_REQUEST = 400;
 
 
+    private $userAgent;
+    private $productId;
+
+
     public function __construct()
     {
         Request::verifyPeer(false);
@@ -34,4 +38,42 @@ class Command
 
         return true;
     }
+
+    /**
+     *
+     * @return string
+     */
+    public function getUserAgent()
+    {
+        return $this->userAgent;
+    }
+
+    /**
+     * @param $userAgent
+     *
+     * @return string
+     */
+    public function setUserAgent($userAgent)
+    {
+        return $this->userAgent = $userAgent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProductId()
+    {
+        return $this->productId;
+    }
+
+    /**
+     * @param mixed $productId
+     * @return HmCommand
+     */
+    public function setProductId($productId)
+    {
+        $this->productId = $productId;
+        return $this;
+    }
+
 }

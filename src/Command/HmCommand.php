@@ -16,15 +16,13 @@ class HmCommand extends Command
 {
 
     const BASE_URL = 'https://www2.hm.com';
-    const PRODUCT_URL = 'https://www2.hm.com/pl_pl/getAvailability?variants={product}';
+    const AVAILABILITY_URL = 'https://www2.hm.com/pl_pl/getAvailability?variants={product}';
+    const PRODUCT_URL = 'https://www2.hm.com/pl_pl/productpage.{product}.html';
 
     //TODO:: temp path for deving
     const PATH = 'X:\Github\cronMenager/hm.csv';
 
-    private $userAgent;
     private $userSession;
-
-    private $productId;
 
     private $sizeCodes = array(
         '001' => '32/XXS',
@@ -57,7 +55,7 @@ class HmCommand extends Command
      */
     protected function getProductUrl($productId)
     {
-        return str_replace('{product}', urlencode($productId), static::PRODUCT_URL);
+        return str_replace('{product}', urlencode($productId), static::AVAILABILITY_URL);
     }
 
     /**
@@ -95,7 +93,6 @@ class HmCommand extends Command
 
             foreach ($availableSizes as $proctuctKey => $availableSize) {
                 $size = explode('$', $availableSize);
-
                 $writer->write([$proctuctKey, $size[0], $size[1]]);
             }
         }
@@ -148,43 +145,6 @@ class HmCommand extends Command
         }
 
         return $headers;
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getUserAgent()
-    {
-        return $this->userAgent;
-    }
-
-    /**
-     * @param $userAgent
-     *
-     * @return string
-     */
-    public function setUserAgent($userAgent)
-    {
-        return $this->userAgent = $userAgent;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getProductId()
-    {
-        return $this->productId;
-    }
-
-    /**
-     * @param mixed $productId
-     * @return HmCommand
-     */
-    public function setProductId($productId)
-    {
-        $this->productId = $productId;
-        return $this;
     }
 
 

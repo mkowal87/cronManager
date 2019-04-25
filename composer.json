@@ -6,12 +6,22 @@
     }
   ],
   "require": {
-    "mnapoli/silly-php-di": "~1.1",
-    "monolog/monolog": "@stable",
-    "symfony/process": "~3.2",
-    "garoevans/php-enum": "^1.2",
-    "mashape/unirest-php": "3.0.*",
-    "csv-writer": "dev-master"
+    "php": "^7.1.3",
+    "ext-ctype": "*",
+    "ext-iconv": "*",
+    "symfony/console": "4.2.*",
+    "symfony/dotenv": "4.2.*",
+    "symfony/flex": "^1.1",
+    "symfony/framework-bundle": "4.2.*",
+    "symfony/yaml": "4.2.*",
+    "csv-writer": "dev-master",
+    "symfony/orm-pack": "^1.0"
+  },
+  "config": {
+    "preferred-install": {
+      "*": "dist"
+    },
+    "sort-packages": true
   },
   "autoload": {
     "psr-4": {
@@ -21,6 +31,39 @@
   "autoload-dev": {
     "psr-4": {
       "App\\Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "symfony/maker-bundle": "^1.11"
+  },
+
+  "replace": {
+    "paragonie/random_compat": "2.*",
+    "symfony/polyfill-ctype": "*",
+    "symfony/polyfill-iconv": "*",
+    "symfony/polyfill-php71": "*",
+    "symfony/polyfill-php70": "*",
+    "symfony/polyfill-php56": "*"
+  },
+  "scripts": {
+    "auto-scripts": {
+      "cache:clear": "symfony-cmd",
+      "assets:install %PUBLIC_DIR%": "symfony-cmd"
+    },
+    "post-install-cmd": [
+      "@auto-scripts"
+    ],
+    "post-update-cmd": [
+      "@auto-scripts"
+    ]
+  },
+  "conflict": {
+    "symfony/symfony": "*"
+  },
+  "extra": {
+    "symfony": {
+      "allow-contrib": false,
+      "require": "4.2.*"
     }
   }
 }
