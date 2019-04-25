@@ -142,7 +142,7 @@ class HmScraper extends Scraper
         $product->setProductName()
             ->setProductURL(str_replace('{product}', urlencode($this->getProductId()), static::PRODUCT_URL))
             ->setProductImage();
-        
+
         $availableSizes = $this->getAvailableSizes();
 
         return $this;
