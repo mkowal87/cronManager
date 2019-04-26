@@ -11,9 +11,10 @@ namespace App;
 
 use Unirest\Request;
 use CsvWriter\CsvWriter;
-use App\Entity\Products;
-use App\Entity\ProductsSizes;
+use App\Entity\Product;
+use App\Entity\ProductSize;
 use Doctrine;
+use App\Controller\ProductController;
 
 class HmScraper extends Scraper
 {
@@ -26,6 +27,7 @@ class HmScraper extends Scraper
 
     const STORE_POINTER = 'CSV';
 
+    const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36';
     private $userSession;
 
     private $sizeCodes = array(
@@ -48,6 +50,8 @@ class HmScraper extends Scraper
     private $storeInCSV = false;
 
     private $availableSizes = array();
+
+    private $productController;
     /**
      * HmCommand constructor.
      */
@@ -57,6 +61,9 @@ class HmScraper extends Scraper
             $this->setStoreInCSV(true);
         }
 
+        //TODO bootstrap it
+        $this->productController = new ProductController();
+
         return parent::__construct();
     }
 
@@ -64,7 +71,7 @@ class HmScraper extends Scraper
      * @param $productId
      * @return mixed
      */
-    protected function getProductUrl($productId)
+    protected function getAvailabilityUrl($productId)
     {
         return str_replace('{product}', urlencode($productId), static::AVAILABILITY_URL);
     }
@@ -74,7 +81,9 @@ class HmScraper extends Scraper
      */
     public function getProductListSizes($productId){
 
+        $this->setUserAgent(self::USER_AGENT);
         $this->setProductId($productId);
+        $this->getProductInfo($productId);
         $this->getAvailabilitiesRecord($productId);
         $this->writeToDB();
         if ($this->getStoreInCSV()) {
@@ -85,9 +94,36 @@ class HmScraper extends Scraper
 
     }
 
+    private function getProductInfo($productId){
+
+
+        $response = Request::get(str_replace('{product}', urlencode($productId), static::PRODUCT_URL));
+
+        if ($this->checkStatus($response)){
+
+            $this->setHeaders($response->headers);
+
+            $basicData = $this->getBetween($response->body, '<script type="application/ld+json">',  '</script>');
+            $data = json_decode($basicData);
+
+            $product = new Product();
+            $product
+                ->setProductName($data->name)
+                ->setProductURL(str_replace('{product}', urlencode($this->getProductId()), static::PRODUCT_URL))
+                ->setProductImage($data->image)
+                ->setProductColor($data->color)
+                ->setProductPrice($data->offers[0]->price)
+                ->setProductCurrency($data->offers[0]->priceCurrency)
+                ->setProductId($productId);
+
+            $this->productController->saveDataToDB($product);
+        }
+        return $this;
+    }
+
     private function getAvailabilitiesRecord($productId){
 
-        $response = Request::get($this->getProductUrl($productId),
+        $response = Request::get($this->getAvailabilityUrl($productId),
             $this->generateHeaders($this->userSession));
 
         if ($this->checkStatus($response)) {
@@ -136,14 +172,8 @@ class HmScraper extends Scraper
 
     private function writeToDB(){
 
-        $entityManager = $this->getDoctrine()->getEntityManager();
-        var_dump($entityManager);die();
-        $product = new Products();
-        $product->setProductName()
-            ->setProductURL(str_replace('{product}', urlencode($this->getProductId()), static::PRODUCT_URL))
-            ->setProductImage();
-
         $availableSizes = $this->getAvailableSizes();
+        $productSize = new ProductSize();
 
         return $this;
     }
@@ -168,19 +198,15 @@ class HmScraper extends Scraper
      */
     private function generateHeaders($session)
     {
+        $session = $this->getHeaders();
         $headers = [];
         if ($session) {
-            $cookies = '';
-            foreach ($session as $key => $value) {
-                $cookies .= "$key=$value; ";
-            }
+            $cookies = $session['Set-Cookie'];
 
-            $csrf = empty($session['csrftoken']) ? $session['x-csrftoken'] : $session['csrftoken'];
-
+            $cookie = end($cookies);
             $headers = [
-                'cookie' => $cookies,
+                'cookie' => $cookie,
                 'referer' => Self::BASE_URL . '/',
-                'x-csrftoken' => $csrf,
             ];
 
         }

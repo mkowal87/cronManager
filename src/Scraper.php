@@ -23,6 +23,8 @@ class Scraper
     private $userAgent;
     private $productId;
 
+    private $headers;
+
 
     public function __construct()
     {
@@ -80,4 +82,32 @@ class Scraper
 
         return substr(serialize($body), 0, 100);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @param mixed $headers
+     * @return Scraper
+     */
+    public function setHeaders($headers)
+    {
+        $this->headers = $headers;
+        return $this;
+    }
+
+    public function getBetween($string, $start, $end){
+        $string = ' ' . $string;
+        $ini = strpos($string, $start);
+        if ($ini == 0) return '';
+        $ini += strlen($start);
+        $len = strpos($string, $end, $ini) - $ini;
+        return substr($string, $ini, $len);
+    }
+
 }

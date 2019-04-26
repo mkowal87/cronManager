@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\ProductsSizes;
+use App\Entity\ProductSize;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method ProductsSizes|null find($id, $lockMode = null, $lockVersion = null)
- * @method ProductsSizes|null findOneBy(array $criteria, array $orderBy = null)
- * @method ProductsSizes[]    findAll()
- * @method ProductsSizes[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ProductSize|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ProductSize|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ProductSize[]    findAll()
+ * @method ProductSize[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProductsSizesRepository extends ServiceEntityRepository
+class ProductSizeRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, ProductsSizes::class);
+        parent::__construct($registry, ProductSize::class);
     }
 
     // /**
-    //  * @return ProductsSizes[] Returns an array of ProductsSizes objects
+    //  * @return ProductSize[] Returns an array of ProductSize objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ProductsSizesRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ProductsSizes
+    public function findOneBySomeField($value): ?ProductSize
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')
