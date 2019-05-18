@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ProductsRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  */
 class Product
 {
@@ -25,42 +25,37 @@ class Product
     private $productId;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $productName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $productURL;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $productImage;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $productSize;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $productPrice;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $productCurrency;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $productDescription;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $productColor;
 
@@ -136,23 +131,6 @@ class Product
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getProductSize()
-    {
-        return $this->productSize;
-    }
-
-    /**
-     * @param mixed $productSize
-     * @return Product
-     */
-    public function setProductSize($productSize)
-    {
-        $this->productSize = $productSize;
-        return $this;
-    }
 
     /**
      * @return mixed

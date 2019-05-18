@@ -31,7 +31,13 @@ class Scraper
         Request::verifyPeer(false);
     }
 
-
+    /**
+     * Checking if response was correct
+     *
+     * @param $response
+     * @return bool
+     * @throws Exception
+     */
     public function checkStatus($response){
 
         if ($response->code !== static::HTTP_OK) {
@@ -101,6 +107,13 @@ class Scraper
         return $this;
     }
 
+    /**
+     * Get string between two strings
+     * @param $string
+     * @param $start
+     * @param $end
+     * @return bool|string
+     */
     public function getBetween($string, $start, $end){
         $string = ' ' . $string;
         $ini = strpos($string, $start);
@@ -110,4 +123,52 @@ class Scraper
         return substr($string, $ini, $len);
     }
 
+    /**
+     * @param $productId
+     * @return $this
+     */
+    public function writeToCSV()
+    {
+
+        $availableSizes = $this->getAvailableSizes();
+
+        $writer = (new CsvWriter())
+            ->open(str_replace('{productId}', urlencode($this->getProductId()), self::CSV_PATH));
+
+        foreach ($availableSizes as $productKey => $availableSize) {
+            $size = explode('$', $availableSize);
+            $writer->write([$productKey, $size[0], $size[1]]);
+        }
+
+
+        return $this;
+    }
+
+    /**
+     * @param $session
+     *
+     * @return array
+     */
+    public function generateHeaders($session)
+    {
+        $session = $this->getHeaders();
+        $headers = [];
+        if ($session) {
+            $cookies = $session['Set-Cookie'];
+
+            $cookie = end($cookies);
+            $headers = [
+                'cookie' => $cookie,
+                'referer' => $this->baseUrl . '/',
+            ];
+
+        }
+
+        if ($this->getUserAgent()) {
+            $headers['user-agent'] = $this->getUserAgent();
+
+        }
+
+        return $headers;
+    }
 }
