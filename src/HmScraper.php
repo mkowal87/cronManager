@@ -12,7 +12,7 @@ namespace App;
 use Unirest\Request;
 use CsvWriter\CsvWriter;
 use App\Entity\Product;
-use App\Entity\ProductSize;
+use App\Entity\ProductAvailability;
 use Doctrine;
 use App\Controller\ProductController;
 
@@ -110,6 +110,7 @@ class HmScraper extends Scraper
 
             // Checking if we already have a product in DB
             if ($product = $this->productController->getDataFromDBbyProductID($productId)) {
+
                 if ($product->getProductPrice() != $data->offers[0]->price && $data->offers[0]->price > 0) {
                     // If there is a new price store it
                     $this->productController->updateProductPrice($product, $data->offers[0]->price);
@@ -193,25 +194,37 @@ class HmScraper extends Scraper
     {
         $code = str_replace($this->getProductId(), '', $sizeCode);
 
-        if (!isset($this->sizeCodes[$code])) {
+        if (!isset(self::SIZE_CODE[$code])) {
             return 'no size found ' . $code;
         }
         return self::SIZE_CODE[$code];
     }
 
+    /**
+     * @return $this
+     */
     private function writeAvailabilityToDB()
     {
 
         $availableSizes = $this->getAvailableSizes();
-        foreach ($availableSizes as $availableSize) {
+        foreach ($availableSizes as $internalId => $availableSize) {
             $avails = explode('$', $availableSize);
             $size = $avails[0];
             $status = $avails[1];
-            //var_dump($availableSizes);die();
-            $productSize = new ProductSize();
-            $productSize->setProductId($this->getProductId())
-                ->setProductSize($size)
-                ->setProductStatus($status);
+
+            if ($productAvailability = $this->productAvailabilityController->getAvailabilityByInternalId($internalId)){
+                if ($productAvailability->getProductSize() != $size || $productAvailability->getProductStatus() != $status) {
+                    $this->productAvailabilityController->updateProductAvailability($internalId, $size, $status);
+                }
+            }else {
+                $productAvailability = new ProductAvailability();
+                $productAvailability->setProductId($this->getProductId())
+                    ->setProductSize($size)
+                    ->setProductStatus($status)
+                    ->setProductInternalSizeId($internalId);
+
+                $this->productAvailabilityController->saveDataToDB($productAvailability);
+            }
         }
         return $this;
     }

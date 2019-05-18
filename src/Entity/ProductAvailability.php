@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ProductSizeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProductAvailabilityRepository")
  */
-class ProductSize
+class ProductAvailability
 {
     /**
      * @ORM\Id()
@@ -19,12 +19,12 @@ class ProductSize
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $productSize;
+    private $productId;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $productId;
+    private $productSize;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -34,22 +34,11 @@ class ProductSize
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $productInterlanSizeId;
+    private $productInternalSizeId;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProductSize(): ?string
-    {
-        return $this->productSize;
-    }
-
-    public function setProductSize(?string $productSize): self
-    {
-        $this->productSize = $productSize;
-        return $this;
     }
 
     /**
@@ -62,13 +51,24 @@ class ProductSize
 
     /**
      * @param mixed $productId
-     * @return ProductSize
+     * @return ProductAvailability
      */
     public function setProductId($productId)
     {
         $this->productId = $productId;
         return $this;
     }
+    public function getProductSize(): ?string
+    {
+        return $this->productSize;
+    }
+
+    public function setProductSize(?string $productSize): self
+    {
+        $this->productSize = $productSize;
+        return $this;
+    }
+
 
     /**
      * @return mixed
@@ -80,7 +80,7 @@ class ProductSize
 
     /**
      * @param mixed $productStatus
-     * @return ProductSize
+     * @return ProductAvailability
      */
     public function setProductStatus($productStatus)
     {
@@ -91,21 +91,19 @@ class ProductSize
     /**
      * @return mixed
      */
-    public function getProductInterlanSizeId()
+    public function getProductInternalSizeId()
     {
-        return $this->productInterlanSizeId;
+        return $this->productInternalSizeId;
     }
 
     /**
-     * @param mixed $productInterlanSizeId
-     * @return ProductSize
+     * @param mixed $productInternalSizeId
+     * @return ProductAvailability
      */
-    public function setProductInterlanSizeId($productInterlanSizeId)
+    public function setProductInternalSizeId($productInternalSizeId)
     {
-        $this->productInterlanSizeId = $productInterlanSizeId;
+        $this->productInternalSizeId = $productInternalSizeId;
         return $this;
     }
-
-
 
 }
