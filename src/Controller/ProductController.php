@@ -9,24 +9,58 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ProductController extends AbstractController
 {
-    /**
-     * @Route("/product", name="product")
-     */
-    public function index()
+
+    protected $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/ProductController.php',
-        ]);
+        $this->setEntityManager($entityManager);
+    }
+
+    public function getDataFromDBbyProductID($productId){
+        $product = $this->getEntityManager()
+            ->getRepository(Product::class)
+            ->findByProductId($productId);
+
+
+        if (!$product) {
+            return false;
+        }
+        return $product;
+    }
+
+    public function updateProductPrice(Product $product, $newPrice){
+        $entityManager = $this->getEntityManager();
+        $product->setProductPrice($newPrice);
+        $entityManager->flush();
+        return $this;
     }
 
     public function saveDataToDB(Product $product){
 
-        var_dump($this->getDoctrine());die();
-        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $this->getEntityManager();
+
         $entityManager->persist($product);
         $entityManager->flush();
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * @param mixed $entityManager
+     */
+    public function setEntityManager($entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+
 }

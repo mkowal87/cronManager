@@ -21,6 +21,21 @@ class ProductSize
      */
     private $productSize;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $productId;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $productStatus;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $productInterlanSizeId;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -34,7 +49,63 @@ class ProductSize
     public function setProductSize(?string $productSize): self
     {
         $this->productSize = $productSize;
-
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getProductId()
+    {
+        return $this->productId;
+    }
+
+    /**
+     * @param mixed $productId
+     * @return ProductSize
+     */
+    public function setProductId($productId)
+    {
+        $this->productId = $productId;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProductStatus()
+    {
+        return $this->productStatus;
+    }
+
+    /**
+     * @param mixed $productStatus
+     * @return ProductSize
+     */
+    public function setProductStatus($productStatus)
+    {
+        $this->productStatus = $productStatus;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProductInterlanSizeId()
+    {
+        return $this->productInterlanSizeId;
+    }
+
+    /**
+     * @param mixed $productInterlanSizeId
+     * @return ProductSize
+     */
+    public function setProductInterlanSizeId($productInterlanSizeId)
+    {
+        $this->productInterlanSizeId = $productInterlanSizeId;
+        return $this;
+    }
+
+
+
 }

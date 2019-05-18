@@ -7,11 +7,22 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use App\HmScraper;
+use App\Controller\ProductController;
+use App\Controller\ProductAvailabilityController;
+use Psr\Container\ContainerInterface;
 
 class HmCommand extends Command
 {
 
     protected static $defaultName = 'app:get-product-info-hm';
+
+    private $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct();
+        $this->container = $container;
+    }
 
     protected function configure()
     {
@@ -30,8 +41,10 @@ class HmCommand extends Command
             '===============================================',
             '',
         ]);
-
-        $scraper = new HmScraper($input->getArgument('csv'));
+        $em = $this->container->get('doctrine')->getManager();
+        $productController = new ProductController($em);
+        $productAvailabilityController = new ProductAvailabilityController($em);
+        $scraper = new HmScraper($input->getArgument('csv'), $productController, $productAvailabilityController);
         $scraper->getProductListSizes($input->getArgument('productid'));
 
     }
