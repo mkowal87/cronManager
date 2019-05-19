@@ -23,7 +23,7 @@ class HmScraper extends Scraper
     const AVAILABILITY_URL = 'https://www2.hm.com/pl_pl/getAvailability?variants={product}';
     const PRODUCT_URL = 'https://www2.hm.com/pl_pl/productpage.{product}.html';
     //TODO:: temp path for deving
-    const CSV_PATH = 'X:\Github\cronMenager/{productId}hm.csv';
+    const CSV_PATH = 'X:\Github\cronManager/{productId}hm.csv';
 
     const STORE_POINTER = 'CSV';
 
@@ -185,7 +185,6 @@ class HmScraper extends Scraper
     }
 
 
-
     /**
      * @param $sizeCode
      * @return string
@@ -212,11 +211,11 @@ class HmScraper extends Scraper
             $size = $avails[0];
             $status = $avails[1];
 
-            if ($productAvailability = $this->productAvailabilityController->getAvailabilityByInternalId($internalId)){
+            if ($productAvailability = $this->productAvailabilityController->getAvailabilityByInternalId($internalId)) {
                 if ($productAvailability->getProductSize() != $size || $productAvailability->getProductStatus() != $status) {
                     $this->productAvailabilityController->updateProductAvailability($internalId, $size, $status);
                 }
-            }else {
+            } else {
                 $productAvailability = new ProductAvailability();
                 $productAvailability->setProductId($this->getProductId())
                     ->setProductSize($size)
@@ -301,7 +300,6 @@ class HmScraper extends Scraper
         $this->productAvailabilityController = $productAvailabilityController;
         return $this;
     }
-
 
 
 }
